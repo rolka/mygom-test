@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-const initialItems = Array.from({ length: 100 }, (_, index) => `Item ${index + 1}`);
+const initialItems = Array.from({ length: 500 }, (_, index) => `Item ${index + 1}`);
 
 const Dialog = ({ onClose }: { onClose: () => void }) => {
     const [items, setItems] = useState<string[]>(initialItems.slice(0, 20));
     const [loading, setLoading] = useState(false);
     const [lastItemDeleted, setLastItemDeleted] = useState(false);
     const listRef = useRef<HTMLDivElement>(null);
-    const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog box
-    const [isVisible, setIsVisible] = useState(false); // To handle transition
+    const dialogRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         setTimeout(() => setIsVisible(true), 10);
@@ -18,19 +18,16 @@ const Dialog = ({ onClose }: { onClose: () => void }) => {
         setIsVisible(false);
         setTimeout(() => {
             onClose();
-        }, 300); // Delay to allow transition before removing from the DOM
+        }, 300);
     };
 
-    // Close dialog when clicking outside of it
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
-                handleClose(); // Close the dialog when clicking outside
+                handleClose();
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
-
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
@@ -43,10 +40,7 @@ const Dialog = ({ onClose }: { onClose: () => void }) => {
                 const moreItems = initialItems.slice(items.length, items.length + 20);
                 setItems((prevItems) => [...prevItems, ...moreItems]);
                 setLoading(false);
-                console.log("Loaded more items:", moreItems);
             }, 1000);
-        } else {
-            console.log("No more items to load or loading in progress.");
         }
     };
 
@@ -58,29 +52,21 @@ const Dialog = ({ onClose }: { onClose: () => void }) => {
                 loadMoreItems();
             }
         };
-
         const listElement = listRef.current;
         listElement?.addEventListener("scroll", handleScroll);
-
         return () => {
-            listElement?.removeEventListener("scroll", handleScroll); // Clean up
+            listElement?.removeEventListener("scroll", handleScroll);
         };
     }, [items.length, loading, lastItemDeleted]);
 
     const deleteItem = (index: number) => {
-        console.log("Deleting item index:", index);
         const updatedItems = items.filter((_, i) => i !== index);
         setItems(updatedItems);
-        console.log("Updated items after deletion:", updatedItems);
-
         if (updatedItems.length === 0) {
-            console.log("All items deleted.");
             setLastItemDeleted(true);
         } else if (index === updatedItems.length) {
-            console.log("Last item deleted.");
             setLastItemDeleted(true);
         } else {
-            console.log("Items remaining, lastItemDeleted set to false.");
             setLastItemDeleted(false);
         }
     };
