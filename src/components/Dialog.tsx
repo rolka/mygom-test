@@ -99,7 +99,7 @@ const Dialog = ({ onClose }: { onClose: () => void }) => {
                     <div className="mt-4">
                         <h3 className="text-xl font-bold">You've deleted the last item!</h3>
                         <img
-                            src="https://loremflickr.com/320/240/cat"
+                            src="https://placecats.com/320/240"
                             alt="A cute cat"
                             className="mt-2 w-full rounded-md"
                         />
