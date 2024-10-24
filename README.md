@@ -13,7 +13,7 @@ This project is a test response for the qualification task by [Mygom.tech](https
 1. Clone the repository:
    ```
    git clone https://github.com/rolka/mygom-test
-   cd mygom-tech-task
+   cd mygom-test
    ```
 
 2. Install dependencies:
